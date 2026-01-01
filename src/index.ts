@@ -1,17 +1,33 @@
 import express from 'express'
+import { authRouter } from './routes/auth.route.js';
+import { auth } from './middleware/auth.middleware.js';
+import { expensesRouter } from './routes/expenses.route.js';
+import { budgetsRouter } from './routes/budgets.route.js';
+import { dashbaordRoute } from './routes/dashboard.route.js';
+import { reportRouter } from './routes/reports.route.js';
 
 const app = express()
 
-app.get('/', (_req, res) => {
-  res.send('Hello Express!')
-})
+// Global middleware
+app.use(express.json());
 
-app.get('/api/users/:id', (_req, res) => {
-  res.json({ id: _req.params.id })
-})
+app.get("/", (_req, res) => {
+  res.send("<h3>Expense Tracker Api</h3>");
+});
 
-app.get('/api/posts/:postId/comments/:commentId', (_req, res) => {
-  res.json({ postId: _req.params.postId, commentId: _req.params.commentId })
-})
+// Health
+app.get("/health", (_req, res) => res.json({ ok: true }));
+
+app.use("/api/auth", authRouter);
+
+app.use(auth);
+
+app.use("/api/expenses", expensesRouter);
+
+app.use("/api/budgets", budgetsRouter);
+
+app.use("/api/dashboard", dashbaordRoute);
+
+app.use("/api/reports", reportRouter);
 
 export default app
