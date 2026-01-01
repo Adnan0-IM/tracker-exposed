@@ -3,6 +3,9 @@
     "target": "ESNext",
     "module": "NodeNext",
     "skipLibCheck": true,
+    "noEmit": false,
+    "outDir": "dist",
+    "allowImportingTsExtensions": false
   },
   "exclude": ["node_modules"]
 }
