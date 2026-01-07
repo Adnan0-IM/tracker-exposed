@@ -65,12 +65,15 @@ export const signIn = async (req: Request, res: Response) => {
       .from(usersTable)
       .where(eq(usersTable.email, email));
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-    const isValid = await comparePassword(password, user?.password);
+    const isValid = await comparePassword(password, user.password);
 
-    if (!isValid)
-      return res.status(401).json({ error: "Invalid creadentials" });
+    if (!isValid) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     const token = getToken(user.id);
 
